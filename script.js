@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             this.saturation = Math.random() * 30 + 50;
             this.lightness = Math.random() * 20 + 55;
 
-            const baseColors = ['#346bf1', '#1a1c1c', '#737686', '#002d72', '#94a3b8', '#cbd5e1'];
+            const baseColors = ['#0050d7', '#346bf1', '#1a1c1c', '#737686', '#002d72', '#94a3b8'];
             this.baseColor = baseColors[Math.floor(Math.random() * baseColors.length)];
             this.currentColor = this.baseColor;
             this.colorBlend = 0;
@@ -410,7 +410,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             ctx.beginPath();
                             ctx.moveTo(nearMouse[i].x, nearMouse[i].y);
                             ctx.lineTo(nearMouse[j].x, nearMouse[j].y);
-                            ctx.strokeStyle = `rgba(52, 107, 241, ${opacity})`;
+                            ctx.strokeStyle = `rgba(0, 80, 215, ${opacity})`;
                             ctx.lineWidth = 0.5;
                             ctx.globalAlpha = 1;
                             ctx.stroke();
@@ -606,7 +606,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             this.saturation = Math.random() * 30 + 50;
             this.lightness = Math.random() * 20 + 55;
 
-            const baseColors = ['#346bf1', '#1a1c1c', '#737686', '#002d72', '#94a3b8', '#cbd5e1'];
+            const baseColors = ['#0050d7', '#346bf1', '#1a1c1c', '#737686', '#002d72', '#94a3b8'];
             this.baseColor = baseColors[Math.floor(Math.random() * baseColors.length)];
             this.currentColor = this.baseColor;
             this.colorBlend = 0;
