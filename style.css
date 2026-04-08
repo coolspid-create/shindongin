@@ -338,12 +338,12 @@ h1 {
 #dynamic-projects-container {
     display: flex;
     flex-direction: column;
-    gap: 160px;
+    gap: 120px;
 }
 
 .project-item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 120px;
     position: relative;
 }
@@ -419,8 +419,6 @@ h1 {
 
 .project-content {
     flex: 0 0 400px;
-    position: sticky;
-    top: 40vh;
 }
 
 .project-meta {
@@ -597,7 +595,7 @@ footer {
 
 @media (max-width: 1024px) {
     nav {
-        padding: 24px 40px;
+        padding: 20px 40px;
     }
 
     .hero,
@@ -605,10 +603,6 @@ footer {
     footer {
         padding-left: 40px;
         padding-right: 40px;
-    }
-
-    h1 {
-        font-size: 4rem;
     }
 
     .project-item {
@@ -623,7 +617,7 @@ footer {
     }
 
     .about-vision {
-        padding: 80px 40px;
+        padding: 100px 40px;
     }
 
     .vision-inner {
@@ -636,16 +630,108 @@ footer {
         width: 100%;
         flex-direction: row;
         align-items: center;
-        gap: 24px;
+        gap: 32px;
     }
 
     .vision-photo-placeholder {
-        width: 120px;
+        width: 140px;
         aspect-ratio: 1;
         flex-shrink: 0;
     }
 
     .pillars-grid {
         grid-template-columns: 1fr;
+        gap: 32px;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        padding: 16px 20px;
+    }
+
+    .nav-links {
+        gap: 20px;
+    }
+
+    .hero-content {
+        padding: 0 20px;
+    }
+
+    .hero,
+    .projects,
+    footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .label {
+        font-size: 0.75rem;
+        letter-spacing: 0.2em;
+    }
+
+    .hero-subtext {
+        font-size: 1rem;
+    }
+
+    .about-vision {
+        padding: 80px 20px;
+    }
+
+    .vision-headline {
+        font-size: 2.5rem;
+    }
+
+    .vision-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+    }
+
+    .vision-photo-placeholder {
+        width: 100px;
+    }
+
+    .project-content h2 {
+        font-size: 2rem;
+    }
+
+    #dynamic-projects-container {
+        gap: 60px;
+    }
+
+    .project-image-container {
+        padding: 16px;
+        border-radius: 24px;
+    }
+
+    footer {
+        padding-top: 100px;
+        padding-bottom: 40px;
+    }
+
+    .footer-title {
+        font-size: clamp(2rem, 8vw, 3rem);
+        min-height: calc(3rem * 1.2 * 2);
+        margin-bottom: 32px;
+    }
+
+    .footer-actions {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        min-width: unset;
+        padding: 16px 24px;
+    }
+
+    .copyright {
+        margin-top: 80px;
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+        text-align: center;
     }
 }
