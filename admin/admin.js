@@ -281,10 +281,12 @@ async function fetchSiteContent() {
         return;
     }
 
-    // Ensure about_photo exists in the form even if it's not in DB yet
-    if (!data.find(d => d.section_key === 'about_photo')) {
-        data.push({ section_key: 'about_photo', content: '' });
-    }
+    // Ensure mandatory keys exist in the form for editing
+    ['about_photo', 'footer_location'].forEach(key => {
+        if (!data.find(d => d.section_key === key)) {
+            data.push({ section_key: key, content: '' });
+        }
+    });
 
     contentFields.innerHTML = '';
     data.forEach(item => {
