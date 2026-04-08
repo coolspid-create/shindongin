@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shin Dong In | Portfolio 2026</title>
+    <meta name="description"
+        content="Portfolio of Shin Dong In - Atmospheric Weightlessness. A high-end editorial experience.">
+    <link rel="stylesheet" href="style.css">
+    <!-- Supabase CDN (UMD) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">
+            <span class="logo-bold">Shin</span>&hairsp;DongIn
+        </div>
+        <div class="nav-links">
+            <a href="#work">WORK</a>
+            <a href="#contact">CONTACT</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero" id="hero-section">
+            <!-- Background Particle Canvas -->
+            <canvas id="particle-canvas" class="hero-particles"></canvas>
+
+            <div class="hero-content">
+                <span class="label" style="opacity: 0; transform: translateY(90px);">AI ERA AX TRANSFORMATION
+                    MANAGER</span>
+                <h1 style="opacity: 0;">LEADING AX<br>TRANSFORMATION</h1>
+                <p class="hero-subtext" style="opacity: 0;">Empowering organizations to navigate the shift to AI-first
+                    experiences. We provide the strategic vision and technical execution required to unlock new creative
+                    frontiers.</p>
+            </div>
+        </section>
+
+        <section id="about" class="about-vision">
+            <div class="vision-inner">
+                <div class="vision-left">
+                    <div class="vision-photo-placeholder">
+                        <span class="photo-label">PHOTO</span>
+                    </div>
+                    <div class="vision-bio">
+                        <h3>Shin DongIn</h3>
+                        <p>AI 시대의 비즈니스 전환을 설계하는 AX 트랜스포메이션 매니저. 전략적 기획과 기술 표준화를 통해 조직이 AI-first로 진화할 수 있도록 이끕니다.</p>
+                    </div>
+                </div>
+                <div class="vision-right">
+                    <h2 class="vision-headline">Bridging Human Potential<br>& AI Logic.</h2>
+                    <div class="pillars-grid">
+                        <div class="pillar-card">
+                            <h4>기획</h4>
+                            <p>AI 통합을 위한 비즈니스 전략 수립과 실행 로드맵 설계. 복잡한 디지털 전환 과정을 체계적으로 구조화합니다.</p>
+                        </div>
+                        <div class="pillar-card">
+                            <h4>AX</h4>
+                            <p>AI-first Experience 설계. 사용자 중심의 자연스러운 AI 상호작용을 구축하여 새로운 경험의 지평을 엽니다.</p>
+                        </div>
+                        <div class="pillar-card">
+                            <h4>표준</h4>
+                            <p>AI 업무 프로세스의 표준화와 품질 관리. 지속 가능한 운영 체계를 확립하여 조직의 효율을 극대화합니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="work" class="projects">
+            <!-- Dynamic Projects injected via JS -->
+            <div id="dynamic-projects-container">
+                <p style="text-align: center; color: #777; padding: 40px 0;">Loading projects...</p>
+            </div>
+        </section>
+
+        <footer id="contact">
+            <canvas id="footer-particle-canvas" class="footer-particles"></canvas>
+            <div class="footer-content-wrapper">
+                <div class="footer-title" id="footer-typing-title" style="min-height: 160px;"></div>
+                <div class="footer-actions footer-fade-in" style="opacity: 0; transform: translateY(20px); transition: opacity 1s ease, transform 1s ease; pointer-events: none;">
+                    <a href="#work" class="btn-primary">DISCUSS PROJECT</a>
+                    <a href="https://t.me/shindongin83" target="_blank" rel="noopener noreferrer" class="btn-secondary">CONTACT ME</a>
+                </div>
+                <div class="copyright footer-fade-in" style="opacity: 0; transform: translateY(20px); transition: opacity 1s ease, transform 1s ease; pointer-events: none;">
+                    <span>&copy; 2026 SHIN DONG IN</span>
+                    <span>DESIGNED WITH STITCH & ANTIGRAVITY</span>
+                    <span>LONDON / SEOUL / REMOTE</span>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

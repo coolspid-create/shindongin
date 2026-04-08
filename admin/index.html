@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Shin Dong In</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800 font-sans">
+    <script>console.log('Admin Page Loading...');</script>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="flex items-center justify-center min-h-screen bg-gray-50">
+        <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6 text-center">Admin Login</h2>
+            <form id="login-form">
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-1">비밀번호</label>
+                    <input type="password" id="password" class="w-full border p-2 rounded" required placeholder="비밀번호를 입력하세요">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition">Log In</button>
+                <p id="login-error" class="text-red-500 text-sm mt-3 hidden"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboard-screen" class="hidden min-h-screen flex flex-col">
+        <nav class="bg-white shadow">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16 items-center">
+                    <div class="font-bold text-xl tracking-tight">SDI ADMIN</div>
+                    <button id="logout-btn" class="text-sm font-medium text-gray-500 hover:text-gray-700">Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Tabs -->
+        <div class="bg-gray-50 border-b">
+            <div class="max-w-7xl mx-auto px-4">
+                <ul class="flex space-x-8">
+                    <li><button onclick="switchTab('projects-tab')" class="tab-btn py-4 px-1 border-b-2 border-blue-500 font-medium text-blue-600" id="btn-projects-tab">Projects</button></li>
+                    <li><button onclick="switchTab('content-tab')" class="tab-btn py-4 px-1 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300" id="btn-content-tab">Site Content</button></li>
+                </ul>
+            </div>
+        </div>
+
+        <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
+            
+            <!-- Projects Tab -->
+            <div id="projects-tab" class="tab-content">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-semibold">Manage Projects</h1>
+                    <button onclick="openProjectModal()" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition">+ Add Project</button>
+                </div>
+                
+                <div class="bg-white shadow overflow-hidden sm:rounded-md">
+                    <ul id="project-list" class="divide-y divide-gray-200">
+                        <li class="p-4 text-gray-500 text-center">Loading projects...</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Content Tab -->
+            <div id="content-tab" class="tab-content hidden">
+                <h1 class="text-2xl font-semibold mb-6">Manage Site Content</h1>
+                <div class="bg-white shadow rounded-lg p-6">
+                    <form id="content-form">
+                        <div id="content-fields" class="space-y-6">
+                            <!-- Injected dynamically -->
+                            <p class="text-gray-500">Loading content...</p>
+                        </div>
+                        <div class="mt-6 flex justify-end">
+                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Project Modal -->
+    <div id="project-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center overflow-y-auto">
+        <div class="bg-white rounded-lg p-8 w-full max-w-2xl my-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="modal-title" class="text-xl font-bold">Add New Project</h2>
+                <button onclick="closeProjectModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            
+            <form id="project-form">
+                <input type="hidden" id="proj-id">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Title</label>
+                        <input type="text" id="proj-title" class="w-full border p-2 rounded" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Category (e.g. 01 / SERVICE)</label>
+                        <input type="text" id="proj-category" class="w-full border p-2 rounded" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Description</label>
+                        <textarea id="proj-desc" class="w-full border p-2 rounded h-24" required></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Link URL</label>
+                        <input type="url" id="proj-link" class="w-full border p-2 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Thumbnail Image</label>
+                        <input type="file" id="proj-image-file" class="w-full border p-2 rounded" accept="image/*">
+                        <input type="hidden" id="proj-image-url">
+                        <p class="text-xs text-gray-500 mt-1">Leave empty to keep existing image during update</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Order Index (Lowest comes first)</label>
+                        <input type="number" id="proj-order" value="0" class="w-full border p-2 rounded">
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-end space-x-3">
+                    <button type="button" onclick="closeProjectModal()" class="px-4 py-2 border rounded hover:bg-gray-50">Cancel</button>
+                    <button type="submit" id="proj-submit-btn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Global Loading Spinner -->
+    <div id="global-loader" class="fixed inset-0 bg-white bg-opacity-75 flex flex-col items-center justify-center hidden z-50">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+        <p id="global-loader-text" class="text-gray-700 font-medium">Processing...</p>
+    </div>
+
+    <script src="/admin/admin.js"></script>
+</body>
+</html>
