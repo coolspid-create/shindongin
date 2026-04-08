@@ -22,7 +22,8 @@ INSERT INTO public.site_content (section_key, content) VALUES
 ('hero_desc', 'Empowering organizations to navigate the shift to AI-first experiences. We provide the strategic vision and technical execution required to unlock new creative frontiers.'),
 ('hero_label', 'AI ERA AX TRANSFORMATION MANAGER'),
 ('about_bio', 'AI 시대의 비즈니스 전환을 설계하는 AX 트랜스포메이션 매니저. 전략적 기획과 기술 표준화를 통해 조직이 AI-first로 진화할 수 있도록 이끕니다.'),
-('about_h2', 'Bridging Human Potential<br>& AI Logic.')
+('about_h2', 'Bridging Human Potential<br>& AI Logic.'),
+('footer_location', 'GLOBAL / RESIDENT IN SEOUL')
 ON CONFLICT (section_key) DO UPDATE SET content = EXCLUDED.content;
 
 -- 4. Row Level Security (RLS) 설정

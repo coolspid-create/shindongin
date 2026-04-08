@@ -73,6 +73,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (siteContent.hero_desc && heroDescEl) heroDescEl.innerHTML = siteContent.hero_desc;
     if (siteContent.about_bio && aboutBioEl) aboutBioEl.innerHTML = siteContent.about_bio;
     if (siteContent.about_h2 && aboutH2El) aboutH2El.innerHTML = siteContent.about_h2;
+
+    const footerLocEl = document.querySelector('.copyright span:last-child');
+    if (siteContent.footer_location && footerLocEl) footerLocEl.innerHTML = siteContent.footer_location;
     
     if (siteContent.about_photo && aboutPhotoPlaceholder) {
         aboutPhotoPlaceholder.innerHTML = `<img src="${siteContent.about_photo}" alt="Vision Photo">`;
