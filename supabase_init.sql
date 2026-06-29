@@ -23,7 +23,13 @@ INSERT INTO public.site_content (section_key, content) VALUES
 ('hero_label', 'AI ERA AX TRANSFORMATION MANAGER'),
 ('about_bio', 'AI 시대의 비즈니스 전환을 설계하는 AX 트랜스포메이션 매니저. 전략적 기획과 기술 표준화를 통해 조직이 AI-first로 진화할 수 있도록 이끕니다.'),
 ('about_h2', 'Bridging Human Potential<br>& AI Logic.'),
-('footer_location', 'GLOBAL / RESIDENT IN SEOUL')
+('footer_location', 'GLOBAL / RESIDENT IN SEOUL'),
+('pillar1_title', '기획'),
+('pillar1_desc', 'AI 통합을 위한 비즈니스 전략 수립과 실행 로드맵 설계. 복잡한 디지털 전환 과정을 체계적으로 구조화합니다.'),
+('pillar2_title', 'AX'),
+('pillar2_desc', 'AI-first Experience 설계. 사용자 중심의 자연스러운 AI 상호작용을 구축하여 새로운 경험의 지평을 엽니다.'),
+('pillar3_title', '표준'),
+('pillar3_desc', 'AI 업무 프로세스의 표준화와 품질 관리. 지속 가능한 운영 체계를 확립하여 조직의 효율을 극대화합니다.')
 ON CONFLICT (section_key) DO UPDATE SET content = EXCLUDED.content;
 
 -- 4. Row Level Security (RLS) 설정

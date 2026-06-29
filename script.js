@@ -69,10 +69,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     const aboutH2El = document.querySelector('.vision-headline');
     const aboutPhotoPlaceholder = document.querySelector('.vision-photo-placeholder');
 
+    const pillar1TitleEl = document.getElementById('pillar1-title');
+    const pillar1DescEl = document.getElementById('pillar1-desc');
+    const pillar2TitleEl = document.getElementById('pillar2-title');
+    const pillar2DescEl = document.getElementById('pillar2-desc');
+    const pillar3TitleEl = document.getElementById('pillar3-title');
+    const pillar3DescEl = document.getElementById('pillar3-desc');
+
     if (siteContent.hero_label && labelEl) labelEl.innerHTML = siteContent.hero_label;
     if (siteContent.hero_desc && heroDescEl) heroDescEl.innerHTML = siteContent.hero_desc;
     if (siteContent.about_bio && aboutBioEl) aboutBioEl.innerHTML = siteContent.about_bio;
     if (siteContent.about_h2 && aboutH2El) aboutH2El.innerHTML = siteContent.about_h2;
+
+    if (siteContent.pillar1_title && pillar1TitleEl) pillar1TitleEl.innerHTML = siteContent.pillar1_title;
+    if (siteContent.pillar1_desc && pillar1DescEl) pillar1DescEl.innerHTML = siteContent.pillar1_desc;
+    if (siteContent.pillar2_title && pillar2TitleEl) pillar2TitleEl.innerHTML = siteContent.pillar2_title;
+    if (siteContent.pillar2_desc && pillar2DescEl) pillar2DescEl.innerHTML = siteContent.pillar2_desc;
+    if (siteContent.pillar3_title && pillar3TitleEl) pillar3TitleEl.innerHTML = siteContent.pillar3_title;
+    if (siteContent.pillar3_desc && pillar3DescEl) pillar3DescEl.innerHTML = siteContent.pillar3_desc;
 
     const footerLocEl = document.querySelector('.copyright span:last-child');
     if (siteContent.footer_location && footerLocEl) footerLocEl.innerHTML = siteContent.footer_location;
