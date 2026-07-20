@@ -22,167 +22,187 @@ try {
 /**
  * Portfolio — Typing + Orbital Particles (Hero Only) + Scroll Parallax
  */
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
 
-    // ═══════════════════════════════════════════════════════
-    // 0. FETCH SUPABASE DATA
-    // ═══════════════════════════════════════════════════════
-    console.log('DOMContentLoaded: Starting data fetch from Supabase...');
-    let contentData = null;
-    let projectsData = null;
-
-    if (supabaseClient) {
-    try {
-        const [contentRes, projectsRes] = await Promise.all([
-            supabaseClient.from('site_content').select('*'),
-            supabaseClient.from('portfolio_projects').select('*').order('project_order', { ascending: true })
-        ]);
-        
-        console.log('Supabase Fetch Complete:', { content: contentRes.data, projects: projectsRes.data });
-        
-        if (contentRes.error) throw contentRes.error;
-        if (projectsRes.error) throw projectsRes.error;
-
-        contentData = contentRes.data;
-        projectsData = projectsRes.data;
-    } catch (e) {
-        console.error("Supabase Database Error:", e);
-    }
-    } // end if (supabaseClient)
-
-    // Map content to an object
     const siteContent = {};
-    if (contentData) {
-        contentData.forEach(item => {
-            if (item.section_key) {
-                siteContent[item.section_key.trim()] = item.content;
-            }
-        });
-    }
-    console.log('Site Content Mapped:', siteContent);
-
-
-    // Populate Site Content
-    const labelEl = document.querySelector('.label');
-    const heroDescEl = document.querySelector('.hero-subtext');
-    const aboutBioEl = document.querySelector('.vision-bio p');
-    const aboutH2El = document.querySelector('.vision-headline');
-    const aboutPhotoPlaceholder = document.querySelector('.vision-photo-placeholder');
-
-    const pillar1TitleEl = document.getElementById('pillar1-title');
-    const pillar1DescEl = document.getElementById('pillar1-desc');
-    const pillar2TitleEl = document.getElementById('pillar2-title');
-    const pillar2DescEl = document.getElementById('pillar2-desc');
-    const pillar3TitleEl = document.getElementById('pillar3-title');
-    const pillar3DescEl = document.getElementById('pillar3-desc');
-
-    if (siteContent.hero_label && labelEl) labelEl.innerHTML = siteContent.hero_label;
-    if (siteContent.hero_desc && heroDescEl) heroDescEl.innerHTML = siteContent.hero_desc;
-    if (siteContent.about_bio && aboutBioEl) aboutBioEl.innerHTML = siteContent.about_bio;
-    if (siteContent.about_h2 && aboutH2El) aboutH2El.innerHTML = siteContent.about_h2;
-
-    if (siteContent.pillar1_title && pillar1TitleEl) pillar1TitleEl.innerHTML = siteContent.pillar1_title;
-    if (siteContent.pillar1_desc && pillar1DescEl) pillar1DescEl.innerHTML = siteContent.pillar1_desc;
-    if (siteContent.pillar2_title && pillar2TitleEl) pillar2TitleEl.innerHTML = siteContent.pillar2_title;
-    if (siteContent.pillar2_desc && pillar2DescEl) pillar2DescEl.innerHTML = siteContent.pillar2_desc;
-    if (siteContent.pillar3_title && pillar3TitleEl) pillar3TitleEl.innerHTML = siteContent.pillar3_title;
-    if (siteContent.pillar3_desc && pillar3DescEl) pillar3DescEl.innerHTML = siteContent.pillar3_desc;
-
-    const footerLocEl = document.querySelector('.copyright span:last-child');
-    if (siteContent.footer_location && footerLocEl) footerLocEl.innerHTML = siteContent.footer_location;
-    
-    if (siteContent.about_photo && aboutPhotoPlaceholder) {
-        aboutPhotoPlaceholder.innerHTML = `<img src="${siteContent.about_photo}" alt="Vision Photo">`;
-    }
-
-    // Populate Projects
-    const projectsContainer = document.getElementById('dynamic-projects-container');
-    console.log('Populating Projects:', { containerExists: !!projectsContainer, projectsFound: projectsData?.length });
-
-    if (projectsContainer && projectsData && projectsData.length > 0) {
-        projectsContainer.innerHTML = ''; // clear loading state
-        projectsData.forEach(proj => {
-            const item = document.createElement('div');
-            item.className = 'project-item scroll-reveal'; // Ensure initial setup
-            
-            const thumbHtml = proj.image_url 
-                ? `<div class="project-image-container"><div class="image-inner-wrapper"><img src="${proj.image_url}" alt="${proj.title}"></div></div>`
-                : `<div class="project-image-container"><div class="image-inner-wrapper"><div style="width: 100%; height: 100%; background: #eaeaea; display:flex; align-items:center; justify-content:center; color:#888;">No Image</div></div></div>`;
-                
-            item.innerHTML = `
-                ${thumbHtml}
-                <div class="project-content">
-                    <span class="project-meta">${proj.category}</span>
-                    <h2>${proj.title}</h2>
-                    <p>${proj.description}</p>
-                    ${proj.link_url ? `<a href="${proj.link_url}" target="_blank" rel="noopener noreferrer" class="btn-tertiary">VIEW CASE &rarr;</a>` : ''}
-                </div>
-            `;
-            projectsContainer.appendChild(item);
-        });
-
-        // Re-initialize animations for new elements
-        if (typeof initScrollReveal === 'function') initScrollReveal();
-    } else if (projectsContainer) {
-        projectsContainer.innerHTML = '<p style="text-align: center; color: #777; padding: 40px 0;">No projects available.</p>';
-    }
 
     // ═══════════════════════════════════════════════════════
-    // 1. TYPING ANIMATION
+    // 1. INSTANT HERO TYPING ANIMATION (Zero Delay)
     // ═══════════════════════════════════════════════════════
     const h1 = document.querySelector('h1');
     const label = document.querySelector('.label');
     const subtext = document.querySelector('.hero-subtext');
 
-    const titleHTML = siteContent.hero_title || 'LEADING AX<br>TRANSFORMATION';
-    const titleText = titleHTML.replace(/<br\s*\/?>/gi, '\n');
+    function startHeroTyping() {
+        if (!label || !h1 || !subtext) return;
 
-    h1.textContent = '';
-    h1.style.opacity = '1';
-    h1.classList.add('typing-active');
-
-    subtext.style.transform = 'translateY(20px)';
-
-    // Step 1: Label fades in at the center (already translated via inline CSS)
-    setTimeout(() => {
-        label.style.transition = 'opacity 1.2s ease-in-out';
+        // Reset visibility immediately
         label.style.opacity = '1';
-    }, 150);
-
-    // Step 2: Label moves up to make room
-    setTimeout(() => {
-        label.style.transition = 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease';
         label.style.transform = 'translateY(0)';
-    }, 1600);
+        label.style.transition = 'none';
 
-    // Step 3: Start typing title
-    setTimeout(typeTitle, 2300);
+        h1.style.opacity = '1';
+        subtext.style.transform = 'translateY(20px)';
+        subtext.style.opacity = '0';
 
-    let charIndex = 0;
-    const typingSpeed = 45;
+        const labelText = (siteContent.hero_label || label.getAttribute('data-default') || label.textContent || 'AI ERA AX TRANSFORMATION MANAGER').trim();
+        const titleHTML = siteContent.hero_title || h1.getAttribute('data-default') || 'LEADING AX<br>TRANSFORMATION';
+        const titleText = titleHTML.replace(/<br\s*\/?>/gi, '\n');
 
-    function typeTitle() {
-        if (charIndex < titleText.length) {
-            const currentText = titleText.substring(0, charIndex + 1);
-            h1.innerHTML = currentText.replace(/\n/g, '<br>');
-            h1.innerHTML += '<span class="typing-cursor">|</span>';
-            charIndex++;
-            setTimeout(typeTitle, typingSpeed);
-        } else {
-            setTimeout(() => {
-                h1.innerHTML = titleHTML;
-                h1.classList.remove('typing-active');
+        let labelCharIndex = 0;
+        const labelTypingSpeed = 30; // 30ms per character for instant, responsive typing
 
-                subtext.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-                subtext.style.opacity = '0.7';
-                subtext.style.transform = 'translateY(0)';
+        label.textContent = '';
 
+        function typeLabel() {
+            if (labelCharIndex < labelText.length) {
+                const currentText = labelText.substring(0, labelCharIndex + 1);
+                label.innerHTML = currentText + '<span class="typing-cursor">|</span>';
+                labelCharIndex++;
+                setTimeout(typeLabel, labelTypingSpeed);
+            } else {
+                // Remove cursor from label when finished
+                label.innerHTML = labelText;
+                setTimeout(startTypeTitle, 150); // Small natural pause before title typing
+            }
+        }
+
+        let titleCharIndex = 0;
+        const titleTypingSpeed = 45;
+
+        function startTypeTitle() {
+            h1.textContent = '';
+            h1.classList.add('typing-active');
+            typeTitle();
+        }
+
+        function typeTitle() {
+            if (titleCharIndex < titleText.length) {
+                const currentText = titleText.substring(0, titleCharIndex + 1);
+                h1.innerHTML = currentText.replace(/\n/g, '<br>') + '<span class="typing-cursor">|</span>';
+                titleCharIndex++;
+                setTimeout(typeTitle, titleTypingSpeed);
+            } else {
                 setTimeout(() => {
-                    initParticleSystem();
-                }, 400);
-            }, 300);
+                    h1.innerHTML = siteContent.hero_title || titleHTML;
+                    h1.classList.remove('typing-active');
+
+                    subtext.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    subtext.style.opacity = '0.7';
+                    subtext.style.transform = 'translateY(0)';
+
+                    setTimeout(() => {
+                        initParticleSystem();
+                    }, 300);
+                }, 300);
+            }
+        }
+
+        // Start typing label immediately upon page access
+        typeLabel();
+    }
+
+    // Start hero typing IMMEDIATELY on DOM ready
+    startHeroTyping();
+
+    // ═══════════════════════════════════════════════════════
+    // 0. FETCH SUPABASE DATA (Async Background)
+    // ═══════════════════════════════════════════════════════
+    async function loadSupabaseData() {
+        console.log('Starting data fetch from Supabase...');
+        let contentData = null;
+        let projectsData = null;
+
+        if (supabaseClient) {
+            try {
+                const [contentRes, projectsRes] = await Promise.all([
+                    supabaseClient.from('site_content').select('*'),
+                    supabaseClient.from('portfolio_projects').select('*').order('project_order', { ascending: true })
+                ]);
+                
+                console.log('Supabase Fetch Complete:', { content: contentRes.data, projects: projectsRes.data });
+                
+                if (contentRes.error) throw contentRes.error;
+                if (projectsRes.error) throw projectsRes.error;
+
+                contentData = contentRes.data;
+                projectsData = projectsRes.data;
+            } catch (e) {
+                console.error("Supabase Database Error:", e);
+            }
+        }
+
+        if (contentData) {
+            contentData.forEach(item => {
+                if (item.section_key) {
+                    siteContent[item.section_key.trim()] = item.content;
+                }
+            });
+        }
+        console.log('Site Content Mapped:', siteContent);
+
+        // Populate elements that may arrive after load
+        const heroDescEl = document.querySelector('.hero-subtext');
+        const aboutBioEl = document.querySelector('.vision-bio p');
+        const aboutH2El = document.querySelector('.vision-headline');
+        const aboutPhotoPlaceholder = document.querySelector('.vision-photo-placeholder');
+
+        const pillar1TitleEl = document.getElementById('pillar1-title');
+        const pillar1DescEl = document.getElementById('pillar1-desc');
+        const pillar2TitleEl = document.getElementById('pillar2-title');
+        const pillar2DescEl = document.getElementById('pillar2-desc');
+        const pillar3TitleEl = document.getElementById('pillar3-title');
+        const pillar3DescEl = document.getElementById('pillar3-desc');
+
+        if (siteContent.hero_desc && heroDescEl) heroDescEl.innerHTML = siteContent.hero_desc;
+        if (siteContent.about_bio && aboutBioEl) aboutBioEl.innerHTML = siteContent.about_bio;
+        if (siteContent.about_h2 && aboutH2El) aboutH2El.innerHTML = siteContent.about_h2;
+
+        if (siteContent.pillar1_title && pillar1TitleEl) pillar1TitleEl.innerHTML = siteContent.pillar1_title;
+        if (siteContent.pillar1_desc && pillar1DescEl) pillar1DescEl.innerHTML = siteContent.pillar1_desc;
+        if (siteContent.pillar2_title && pillar2TitleEl) pillar2TitleEl.innerHTML = siteContent.pillar2_title;
+        if (siteContent.pillar2_desc && pillar2DescEl) pillar2DescEl.innerHTML = siteContent.pillar2_desc;
+        if (siteContent.pillar3_title && pillar3TitleEl) pillar3TitleEl.innerHTML = siteContent.pillar3_title;
+        if (siteContent.pillar3_desc && pillar3DescEl) pillar3DescEl.innerHTML = siteContent.pillar3_desc;
+
+        const footerLocEl = document.querySelector('.copyright span:last-child');
+        if (siteContent.footer_location && footerLocEl) footerLocEl.innerHTML = siteContent.footer_location;
+        
+        if (siteContent.about_photo && aboutPhotoPlaceholder) {
+            aboutPhotoPlaceholder.innerHTML = `<img src="${siteContent.about_photo}" alt="Vision Photo">`;
+        }
+
+        // Populate Projects
+        const projectsContainer = document.getElementById('dynamic-projects-container');
+        if (projectsContainer && projectsData && projectsData.length > 0) {
+            projectsContainer.innerHTML = '';
+            projectsData.forEach(proj => {
+                const item = document.createElement('div');
+                item.className = 'project-item scroll-reveal';
+                
+                const thumbHtml = proj.image_url 
+                    ? `<div class="project-image-container"><div class="image-inner-wrapper"><img src="${proj.image_url}" alt="${proj.title}"></div></div>`
+                    : `<div class="project-image-container"><div class="image-inner-wrapper"><div style="width: 100%; height: 100%; background: #eaeaea; display:flex; align-items:center; justify-content:center; color:#888;">No Image</div></div></div>`;
+                    
+                item.innerHTML = `
+                    ${thumbHtml}
+                    <div class="project-content">
+                        <span class="project-meta">${proj.category}</span>
+                        <h2>${proj.title}</h2>
+                        <p>${proj.description}</p>
+                        ${proj.link_url ? `<a href="${proj.link_url}" target="_blank" rel="noopener noreferrer" class="btn-tertiary">VIEW CASE &rarr;</a>` : ''}
+                    </div>
+                `;
+                projectsContainer.appendChild(item);
+            });
+
+            if (typeof initScrollReveal === 'function') initScrollReveal();
+        } else if (projectsContainer) {
+            projectsContainer.innerHTML = '<p style="text-align: center; color: #777; padding: 40px 0;">No projects available.</p>';
         }
     }
+
+    loadSupabaseData();
 
     // ═══════════════════════════════════════════════════════
     // 2. MOUSE-FOLLOWING ORBITAL PARTICLES (HERO ONLY)
