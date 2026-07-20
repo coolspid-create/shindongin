@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
         label.style.transform = 'translateY(0)';
         label.style.transition = 'none';
 
-        h1.style.opacity = '1';
+        h1.style.opacity = '0';
+        h1.textContent = '';
         subtext.style.transform = 'translateY(20px)';
         subtext.style.opacity = '0';
 
@@ -72,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function startTypeTitle() {
             h1.textContent = '';
+            h1.style.opacity = '1';
             h1.classList.add('typing-active');
             typeTitle();
         }
